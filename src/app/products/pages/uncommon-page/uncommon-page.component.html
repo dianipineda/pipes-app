@@ -4,6 +4,7 @@
 </p-panel>
 
 <div class="grid mt-2">
+  <!-- caso: me aparezca la palabra invitado o invitada de acuerdo a si el nombre de la persona es femenino o masculino  -->
   <div class="col-12 sm:col-6 md:col-6 lg:col-6">
     <p-fieldset legend="i18nSelect Pipe" [toggleable]="true">
       <p>
@@ -13,26 +14,54 @@
     </p-fieldset>
     <p-button (click)="changeClient()" label="Cambiar persona"></p-button>
   </div>
-  <!-- caso: En un sistema de tickets, cada vez que toco un boton quiero eliminar un cliente de ese arreglo  -->
+  <!-- caso: En un sistema de tickets, cada vez que toco un boton quiero eliminar un cliente de ese arreglo. que me aparezca la palabra cliente en singular o clientes en plural dependiendo del tamaño del array  -->
   <div class="col-12 sm:col-6 md:col-6 lg:col-6">
     <p-fieldset legend="i18nPlural Pipe" [toggleable]="true">
-      <p>Actualmente tenemos {{ clientes.length }} clientes esperando</p>
+      <p>{{ clientes.length | i18nPlural : clientMap }}</p>
+    </p-fieldset>
+    <p-button (click)="deleteClient()" label="Borrar cliente"></p-button>
+  </div>
+
+  <div class="col-12 sm:col-6 md:col-6 lg:col-6">
+    <p-fieldset legend="Slice Pipe" [toggleable]="true">
+      <b>Original</b>
+      <pre>{{ clientes }}</pre>
+      <b>slice 0:2</b>
+      <pre>{{ clientes | slice : 0 : 2 }}</pre>
+      <!-- Empieza a eliminar de atras hacia adelante -->
+      <b>slice 0:-1</b>
+      <pre>{{ clientes | slice : 0 : -1 }}</pre>
+      <b>slice 0:-2</b>
+      <pre>{{ clientes | slice : 0 : -2 }}</pre>
     </p-fieldset>
   </div>
 
   <div class="col-12 sm:col-6 md:col-6 lg:col-6">
-    <p-fieldset legend="Slice Pipe" [toggleable]="true"></p-fieldset>
+    <p-fieldset legend="Json Pipe" [toggleable]="true">
+      <pre>{{ person | json }}</pre>
+    </p-fieldset>
   </div>
 
   <div class="col-12 sm:col-6 md:col-6 lg:col-6">
-    <p-fieldset legend="Json Pipe" [toggleable]="true"></p-fieldset>
+    <p-fieldset legend="KeyValue Pipe" [toggleable]="true">
+      <ul *ngFor="let item of person | keyvalue">
+        <li>
+          <b>{{ item | json }}</b>
+        </li>
+        <li>
+          <b>{{ item.key | titlecase }}:</b> {{ item.value }}
+        </li>
+      </ul>
+    </p-fieldset>
   </div>
 
   <div class="col-12 sm:col-6 md:col-6 lg:col-6">
-    <p-fieldset legend="KeyValue Pipe" [toggleable]="true"></p-fieldset>
-  </div>
+    <p-fieldset legend="Async Pipe" [toggleable]="true">
+      <pre *ngIf="!(myObservableTimer | async)">Resolviendo observable</pre>
+      <pre>{{ myObservableTimer | async }}</pre>
 
-  <div class="col-12 sm:col-6 md:col-6 lg:col-6">
-    <p-fieldset legend="Async Pipe" [toggleable]="true"></p-fieldset>
+      <pre *ngIf="!(myObservableTimer | async)">Resolviendo promesa</pre>
+      <pre>{{ promiseValue | async }}</pre>
+    </p-fieldset>
   </div>
 </div>
